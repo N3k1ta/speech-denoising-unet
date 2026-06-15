@@ -21,6 +21,7 @@ Input: noisy speech spectrogram. Output: clean speech spectrogram.
 | Notebook | Description |
 |----------|-------------|
 | `speech_denoising_01.ipynb` | EDA — dataset exploration, waveforms, STFT spectrograms |
+| `speech_denoising_02.ipynb` | Preprocessing — chunking, zero-padding, save to .npy |
 
 ## Stack
 
@@ -29,7 +30,7 @@ Python · PyTorch · librosa · NumPy · soundfile · pesq · pystoi
 ## Roadmap
 
 - [x] EDA & data exploration
-- [ ] Preprocessing — chunking, normalisation
+- [x] Preprocessing — chunking, normalisation
 - [ ] U-Net architecture
 - [ ] Training loop
 - [ ] Evaluation — PESQ & STOI
