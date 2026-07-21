@@ -21,7 +21,15 @@ Input: noisy speech spectrogram. Output: clean speech spectrogram.
 | Notebook | Description |
 |----------|-------------|
 | `speech_denoising_01.ipynb` | EDA — dataset exploration, waveforms, STFT spectrograms |
-| `speech_denoising_02.ipynb` | Preprocessing — chunking, zero-padding, save to .npy |
+| `speech_denoising_02.ipynb` | Preprocessing — chunking, zero-padding, STFT conversion, save to .npy |
+| `speech_denoising_03.ipynb` | U-Net architecture — ConvBlock, encoder/decoder, skip connections |
+| `speech_denoising_04.ipynb` | Training — MSE loss, Adam optimizer, MPS acceleration, checkpointing |
+
+## Model
+
+`model.py` — standalone `UNet` architecture module (`ConvBlock` + `UNet`), imported by
+the training and (future) inference notebooks. Encoder 1→32→64→128 channels,
+bottleneck, decoder with skip connections back down to a single-channel output.
 
 ## Stack
 
@@ -30,10 +38,10 @@ Python · PyTorch · librosa · NumPy · soundfile · pesq · pystoi
 ## Roadmap
 
 - [x] EDA & data exploration
-- [x] Preprocessing — chunking, normalisation
-- [ ] U-Net architecture
-- [ ] Training loop
-- [ ] Evaluation — PESQ & STOI
+- [x] Preprocessing — chunking, STFT conversion
+- [x] U-Net architecture
+- [x] Training loop (MPS-accelerated, checkpointed on best loss)
+- [ ] Inference — full-file reconstruction, listening test, PESQ & STOI evaluation
 - [ ] Export to ONNX → DeepFilterNet → JUCE VST/AU plugin
 
 ## License
