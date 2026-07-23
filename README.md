@@ -1,12 +1,32 @@
 # Speech Denoising — U-Net
 
-Deep learning speech enhancement: U-Net encoder-decoder trained on VoiceBank+DEMAND dataset.  
+Deep learning speech enhancement: U-Net encoder-decoder trained on VoiceBank+DEMAND dataset.
 Portfolio step toward a real-time **DeepFilterNet + JUCE** VST/AU plugin.
 
 ## Goal
 
-Train a U-Net model to suppress background noise from speech recordings.  
+Train a U-Net model to suppress background noise from speech recordings.
 Input: noisy speech spectrogram. Output: clean speech spectrogram.
+
+## Results
+
+On a held-out test file (`p232_363.wav`):
+
+| Metric | Score |
+|---|---|
+| PESQ | 2.13 |
+| STOI | 0.97 |
+
+Trained for 10 epochs — chosen over 20 after an explicit comparison found
+test-set metrics got worse past that point (train loss kept falling, test
+loss/PESQ rose — a clear overfitting signal). See notebook 05 for the full
+10-vs-20-epoch table.
+
+Denoising is strongest against stationary noise (hums, fans, traffic); babble
+noise (background speech) remains the hardest case, as expected — it shares
+spectral structure with the target voice.
+
+Example audio (noisy / denoised / clean) in [`samples/`](samples/).
 
 ## Dataset
 
@@ -24,12 +44,12 @@ Input: noisy speech spectrogram. Output: clean speech spectrogram.
 | `speech_denoising_02.ipynb` | Preprocessing — chunking, zero-padding, STFT conversion, save to .npy |
 | `speech_denoising_03.ipynb` | U-Net architecture — ConvBlock, encoder/decoder, skip connections |
 | `speech_denoising_04.ipynb` | Training — MSE loss, Adam optimizer, MPS acceleration, checkpointing |
+| `speech_denoising_05.ipynb` | Inference — full-file reconstruction, listening test, PESQ & STOI |
 
-## Model
+## Code
 
-`model.py` — standalone `UNet` architecture module (`ConvBlock` + `UNet`), imported by
-the training and (future) inference notebooks. Encoder 1→32→64→128 channels,
-bottleneck, decoder with skip connections back down to a single-channel output.
+- `model.py` — standalone `UNet` architecture module (`ConvBlock` + `UNet`)
+- `utils.py` — shared helpers: `slice_array` (chunking), `denoise_chunk` (inference on one chunk)
 
 ## Stack
 
@@ -41,7 +61,7 @@ Python · PyTorch · librosa · NumPy · soundfile · pesq · pystoi
 - [x] Preprocessing — chunking, STFT conversion
 - [x] U-Net architecture
 - [x] Training loop (MPS-accelerated, checkpointed on best loss)
-- [ ] Inference — full-file reconstruction, listening test, PESQ & STOI evaluation
+- [x] Inference — full-file reconstruction, listening test, PESQ & STOI evaluation
 - [ ] Export to ONNX → DeepFilterNet → JUCE VST/AU plugin
 
 ## License

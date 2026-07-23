@@ -13,10 +13,12 @@ def slice_array(audio_array: np.ndarray, chunk_size: int) -> list:
   return chunks  
 
 
-def denoise_chunk(test_chunk, model, device):
-    stft_chunk = np.abs(lb.stft(test_chunk))
-    tensor_chunk = torch.from_numpy(stft_chunk).float()
+def denoise_chunk(noisy_chunk, model, device):
+    stft_chunk = lb.stft(noisy_chunk)
+    stft_chunk_amp = np.abs(stft_chunk)
+    stft_chunk_ph = np.angle(stft_chunk)
+    tensor_chunk = torch.from_numpy(stft_chunk_amp).float()
     tensor_chunk = tensor_chunk.unsqueeze(0).unsqueeze(0)
     tensor_chunk = tensor_chunk.to(device)
     prediction = model(tensor_chunk)
-    return prediction
+    return prediction, stft_chunk_ph
