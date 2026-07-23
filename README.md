@@ -62,7 +62,10 @@ Python · PyTorch · librosa · NumPy · soundfile · pesq · pystoi
 - [x] U-Net architecture
 - [x] Training loop (MPS-accelerated, checkpointed on best loss)
 - [x] Inference — full-file reconstruction, listening test, PESQ & STOI evaluation
-- [ ] Export to ONNX → DeepFilterNet → JUCE VST/AU plugin
+
+This U-Net baseline is complete. Next step (fine-tuning DeepFilterNet, exporting
+to ONNX, building the JUCE plugin) continues in a separate repository as part
+of the broader VoiceClean project.
 
 ## License
 
